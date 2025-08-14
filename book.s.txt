@@ -1,0 +1,46 @@
+#!/bin/bash
+echo "[ABHI-MEGAPACK] Starting full setup..."
+
+# Step 1: Update system
+apt update -y && apt upgrade -y
+
+# Step 2: Install core tools
+pkg install python python-pip git wget curl -y
+pkg install nano unzip -y
+
+# Step 3: Create virtual environment
+if [ ! -d "abhi_env" ]; then
+    python -m venv abhi_env
+fi
+source abhi_env/bin/activate
+
+# Step 4: Install Python dependencies (ML + NLP)
+pip install --upgrade pip
+pip install numpy pandas torch torchvision torchaudio
+pip install scikit-learn transformers datasets
+pip install requests tqdm beautifulsoup4
+pip install sentence-transformers faiss-cpu
+
+# Step 5: Setup ABHI library
+mkdir -p /sdcard/abhi_lib/books
+mkdir -p /sdcard/abhi_lib/logs
+
+# Step 6: Ethical hacking tools (lightweight)
+pkg install nmap -y
+pkg install sqlmap -y
+pkg install hydra -y
+pkg install netcat -y
+pkg install openssl -y
+
+# Step 7: Download default sample book
+wget -O /sdcard/abhi_lib/books/frankenstein.txt https://www.gutenberg.org/files/84/84-0.txt
+
+# Step 8: Auto-update abhi_x4.py from GitHub
+echo "[ABHI-MEGAPACK] Fetching latest abhi_x4.py..."
+GIT_URL="https://raw.githubusercontent.com/Thebigbear2/abhi_ai/main/abhi_x4.py"
+wget -O /sdcard/abhi_x4.py $GIT_URL
+
+# Step 9: Finish
+echo "[ABHI-MEGAPACK] Setup complete!"
+echo "Run with:"
+echo "source abhi_env/bin/activate && python3 /sdcard/abhi_x4.py"
